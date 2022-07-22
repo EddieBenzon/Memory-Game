@@ -1,18 +1,8 @@
 import { useEffect, useState } from "react";
 import SingleCard from "./SingleCard";
 import VictoryScreen from "./VictoryScreen";
-
-const cardCollection = [
-  { src: "/Images/bulba1.png", matched: false, muted: false },
-  { src: "/Images/char1.png", matched: false, muted: false },
-  { src: "/Images/koff1.png", matched: false, muted: false },
-  { src: "/Images/omanyte1.png", matched: false, muted: false },
-  { src: "/Images/pika1.png", matched: false, muted: false },
-  { src: "/Images/squ1.png", matched: false, muted: false },
-  { src: "/Images/pidgey1.png", matched: false, muted: false },
-  { src: "/Images/ratt1.png", matched: false, muted: false },
-  { src: "/Images/sand1.png", matched: false, muted: false },
-];
+import { useCallback } from "react";
+import { cardCollection } from "./CardCollection";
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -25,6 +15,13 @@ function App() {
   const handleChoice = (card) => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
+
+  const resetChoice = useCallback(() => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(turns + 1);
+    setMuted(false);
+  }, [turns]);
 
   const shuffleDeck = () => {
     const shuffledCards = [...cardCollection, ...cardCollection]
@@ -61,7 +58,7 @@ function App() {
         }, 800);
       }
     } else return;
-  }, [choiceOne, choiceTwo]);
+  }, [choiceOne, choiceTwo, resetChoice]);
 
   useEffect(() => {
     const allMatched = cards.filter((item) => {
@@ -71,13 +68,6 @@ function App() {
       setVictory(true);
     } else return;
   }, [cards]);
-
-  const resetChoice = () => {
-    setChoiceOne(null);
-    setChoiceTwo(null);
-    setTurns(turns + 1);
-    setMuted(false);
-  };
 
   return (
     <>

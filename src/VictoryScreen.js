@@ -2,8 +2,7 @@ import React from "react";
 
 const VictoryScreen = ({ victory, shuffleDeck }) => {
   return (
-    // <div className={victory ? "victory-main" : "victory-hidden"}>
-    <div className="victory-main">
+    <div className={victory ? "victory-main" : "victory-hidden"}>
       <div className="black-screen"></div>
       <section className="victory-modal">
         <h1>You win! Congrats!</h1>
