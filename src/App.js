@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import SingleCard from "./SingleCard";
+import VictoryScreen from "./VictoryScreen";
 
 const cardCollection = [
   { src: "/Images/bulba1.png", matched: false, muted: false },
@@ -8,6 +9,9 @@ const cardCollection = [
   { src: "/Images/omanyte1.png", matched: false, muted: false },
   { src: "/Images/pika1.png", matched: false, muted: false },
   { src: "/Images/squ1.png", matched: false, muted: false },
+  { src: "/Images/pidgey1.png", matched: false, muted: false },
+  { src: "/Images/ratt1.png", matched: false, muted: false },
+  { src: "/Images/sand1.png", matched: false, muted: false },
 ];
 
 function App() {
@@ -16,6 +20,7 @@ function App() {
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [muted, setMuted] = useState(false);
+  const [victory, setVictory] = useState(false);
 
   const handleChoice = (card) => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
@@ -29,6 +34,7 @@ function App() {
     setChoiceTwo(null);
     setCards(shuffledCards);
     setTurns(0);
+    setVictory(false);
   };
 
   useEffect(() => {
@@ -39,8 +45,8 @@ function App() {
     if (choiceOne && choiceTwo) {
       setMuted(true);
       if (choiceOne.src === choiceTwo.src) {
-        setCards((x) => {
-          return x.map((card) => {
+        setCards((items) => {
+          return items.map((card) => {
             if (card.src === choiceOne.src) {
               return { ...card, matched: true };
             } else {
@@ -54,8 +60,17 @@ function App() {
           resetChoice();
         }, 800);
       }
-    }
+    } else return;
   }, [choiceOne, choiceTwo]);
+
+  useEffect(() => {
+    const allMatched = cards.filter((item) => {
+      return item.matched === true;
+    });
+    if (allMatched.length === 18) {
+      setVictory(true);
+    } else return;
+  }, [cards]);
 
   const resetChoice = () => {
     setChoiceOne(null);
@@ -63,30 +78,36 @@ function App() {
     setTurns(turns + 1);
     setMuted(false);
   };
+
   return (
-    <div className="main-page">
-      <h1>Welcome to the Pokemon Memory Game</h1>
-      <p>Simply click on cards to flip them over and try to match all pairs!</p>
-      <button onClick={shuffleDeck}>New Game</button>
-      <div className="card-grid">
-        {cards.map((card) => {
-          return (
-            <SingleCard
-              card={card}
-              key={card.id}
-              handleChoice={handleChoice}
-              flipped={
-                card === choiceOne ||
-                card === choiceTwo ||
-                card.matched === true
-              }
-              muted={muted}
-            />
-          );
-        })}
+    <>
+      <VictoryScreen victory={victory} shuffleDeck={shuffleDeck} />
+      <div className="main-page">
+        <h1>Welcome to the Pokemon Memory Game</h1>
+        <p>
+          Simply click on cards to flip them over and try to match all pairs!
+        </p>
+        <button onClick={shuffleDeck}>New Game</button>
+        <div className="card-grid">
+          {cards.map((card) => {
+            return (
+              <SingleCard
+                card={card}
+                key={card.id}
+                handleChoice={handleChoice}
+                flipped={
+                  card === choiceOne ||
+                  card === choiceTwo ||
+                  card.matched === true
+                }
+                muted={muted}
+              />
+            );
+          })}
+        </div>
+        <p>{`Turns: ${turns}`}</p>
       </div>
-      <p>{`Turns: ${turns}`}</p>
-    </div>
+    </>
   );
 }
 

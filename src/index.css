@@ -7,6 +7,7 @@
 }
 
 body {
+  margin: 0;
   background-color: rgb(49, 53, 99);
   color: white;
   font-family: "Open Sans", sans-serif;
@@ -32,10 +33,10 @@ body {
 }
 .card-grid {
   margin: 40px auto;
-  width: 80%;
-  max-width: 750px;
+  width: 100%;
+  max-width: 1200px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
 img {
@@ -44,9 +45,9 @@ img {
 
 .card {
   position: relative;
-  max-width: 160px;
-  min-width: 100px;
-  margin-bottom: 8px;
+  max-width: 260px;
+  min-width: 80px;
+  margin: 0px 8px 8px 8px;
 }
 .card:hover {
   cursor: pointer;
@@ -88,7 +89,56 @@ button:hover {
   cursor: pointer;
   background-color: rgba(131, 131, 131, 0.5);
 }
-
+.victory-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.victory-modal {
+  animation: Flip 0.2s linear;
+  margin-top: 60px;
+  font-family: "Open Sans", sans-serif;
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+  background-color: whitesmoke;
+  color: black;
+  padding: 18px;
+}
+.victory-hidden {
+  display: none;
+}
+.victory-modal h1 {
+  font-size: 40px;
+  font-weight: 500;
+  color: rgb(49, 53, 99);
+  margin-bottom: 20px;
+}
+.victory-modal p {
+  font-weight: 300;
+  font-size: 24px;
+}
+.victory-modal img {
+  width: 100%;
+  margin: 20px 0px;
+}
+.victory-modal button {
+  margin-top: 20px;
+}
+.black-screen {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: all ease-in 0.25s;
+  transition-delay: 0.15s;
+}
 /* Mobile Transition */
 
 @media only screen and (max-width: 700px) {
@@ -100,6 +150,22 @@ button:hover {
   }
   .main-page {
     margin-top: 10px;
-    padding: 0px 8px 8px 8px;
+    padding: 0px 8px;
+  }
+  .card {
+    margin: 0px 4px 4px 4px;
+  }
+}
+
+/* Animations */
+
+@keyframes Flip {
+  0% {
+    opacity: 0;
+    transform: rotateY(90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg);
   }
 }
